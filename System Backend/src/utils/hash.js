@@ -1,8 +1,7 @@
 import bcrypt from 'bcryptjs';
-import { env } from '../config/env.js';
 
 export const hashPassword = async (plainPassword) => {
-  const salt = await bcrypt.genSalt(env.BCRYPT_SALT_ROUNDS);
+  const salt = await bcrypt.genSalt(Number(process.env.BCRYPT_SALT_ROUNDS) || 10);
   return bcrypt.hash(plainPassword, salt);
 };
 

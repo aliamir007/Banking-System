@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken';
-import { jwtConfig } from '../config/jwt.js';
 import { User } from '../models/User.js';
 import { AppError } from '../utils/appError.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
@@ -15,7 +14,7 @@ export const requireAuth = asyncHandler(async (req, res, next) => {
 
   let decoded;
   try {
-    decoded = jwt.verify(token, jwtConfig.secret);
+    decoded = jwt.verify(token, process.env.JWT_SECRET);
   } catch (err) {
     if (err.name === 'TokenExpiredError') {
       throw new AppError('Authentication token has expired', 401, 'TOKEN_EXPIRED');

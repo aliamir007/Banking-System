@@ -1,4 +1,3 @@
-import { env } from '../config/env.js';
 import { AppError } from '../utils/appError.js';
 
 export const errorHandler = (err, req, res, next) => {
@@ -47,7 +46,7 @@ export const errorHandler = (err, req, res, next) => {
     error: { code },
   };
 
-  if (env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'development') {
     payload.error.stack = err.stack;
   }
 
