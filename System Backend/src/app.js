@@ -19,7 +19,7 @@ app.use(helmet());
 
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN || "http://localhost:5173",
+    origin: process.env.CORS_ORIGIN || "http://localhost:5174",
     credentials: true,
   })
 );
@@ -77,11 +77,11 @@ app.get("/health", (req, res) => {
 });
 
 // API routes
-app.use("/api/v1/auth", authLimiter, authRoutes);
-app.use("/api/v1/accounts", accountRoutes);
-app.use("/api/v1/transactions", transactionRoutes);
-app.use("/api/v1/fraud", fraudRoutes);
-app.use("/api/v1/audit-logs", auditRoutes);
+app.use("/auth", authLimiter, authRoutes);
+app.use("/accounts", accountRoutes);
+app.use("/transactions", transactionRoutes);
+app.use("/fraud", fraudRoutes);
+app.use("/audit-logs", auditRoutes);
 
 // Error handling
 app.use(notFound);
