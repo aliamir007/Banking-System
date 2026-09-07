@@ -1,6 +1,7 @@
 import { Account } from '../models/Account.js';
 import { AppError } from '../utils/appError.js';
 import { ROLES } from '../constants/roles.js';
+import { ACCOUNT_STATUS } from '../constants/accountStatus.js'; 
 import crypto from 'node:crypto';
 import { createAuditLog } from './audit.service.js';
 
@@ -79,4 +80,38 @@ export const getAccountBalance = async (accountId, requester) => {
     currency: account.currency,
     status: account.status,
   };
+};
+
+export const depositToAccount = async (accountId, { amount }, requester, requestMeta = {}) => {
+  const account = await getAccountById(accountId, requester);
+
+  if (account.status !== ACCOUNT_STATUS.ACTIVE) {
+    throw new AppError(
+      `Cannot deposit into an account that is ${account.status.toLowerCase()}`,
+      400,
+      'ACCOUNT_NOT_ACTIVE'
+    );
+  }
+
+  const updatedAccount = await Account.findByIdAndUpdate(
+    accountId,
+    { $inc: { balance: amount } },
+    { new: true, runValidators: true }
+  );
+
+  await createAuditLog({
+    userId: requester.id,
+    action: 'DEPOSIT_MADE',
+    resource: 'Account',
+    resourceId: account._id,
+    metadata: {
+      accountNumber: account.accountNumber,
+      amount,
+      newBalance: updatedAccount.balance,
+    },
+    ipAddress: requestMeta.ip,
+    userAgent: requestMeta.userAgent,
+  });
+
+  return updatedAccount;
 };

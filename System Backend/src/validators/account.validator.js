@@ -17,3 +17,19 @@ export const validateCreateAccount = (body) => {
 
   return errors;
 };
+
+export const validateDeposit = (body) => {
+  const errors = [];
+  const { amount } = body;
+  const numericAmount = Number(amount);
+
+  if (amount === undefined || amount === null || amount === '' || Number.isNaN(numericAmount)) {
+    errors.push({ field: 'amount', message: 'amount must be a number' });
+  } else if (numericAmount <= 0) {
+    errors.push({ field: 'amount', message: 'amount must be greater than 0' });
+  } else if (numericAmount > 10000000) {
+    errors.push({ field: 'amount', message: 'amount exceeds the maximum allowed deposit' });
+  }
+
+  return errors;
+};

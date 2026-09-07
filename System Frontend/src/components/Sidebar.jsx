@@ -1,19 +1,11 @@
 import { NavLink } from 'react-router-dom';
-import {
-  LayoutDashboard,
-  Wallet,
-  ArrowLeftRight,
-  Receipt,
-  UserRound,
-  ShieldAlert,
-  ScrollText,
-  LogOut,
-} from 'lucide-react';
+import {LayoutDashboard,Wallet,PiggyBank,ArrowLeftRight,Receipt,UserRound,ShieldAlert,ScrollText,LogOut} from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
 
 const customerLinks = [
   { to: '/dashboard', label: 'Overview', icon: LayoutDashboard },
   { to: '/accounts', label: 'Accounts', icon: Wallet },
+  { to: '/deposit', label: 'Deposit', icon: PiggyBank },
   { to: '/transfer', label: 'Transfer', icon: ArrowLeftRight },
   { to: '/transactions', label: 'Transactions', icon: Receipt },
   { to: '/profile', label: 'Profile', icon: UserRound },

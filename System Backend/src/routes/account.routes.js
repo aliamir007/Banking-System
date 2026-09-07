@@ -1,5 +1,5 @@
 import express from 'express';
-import { create, list, getById, getBalance } from '../controllers/account.controller.js';
+import { create, list, getById, getBalance, deposit } from '../controllers/account.controller.js';
 import { requireAuth } from '../middleware/auth.middleware.js';
 
 const router = express.Router();
@@ -10,5 +10,6 @@ router.post('/', create);
 router.get('/', list);
 router.get('/:id', getById);
 router.get('/:id/balance', getBalance);
+router.post('/:id/deposit', deposit);
 
 export default router;

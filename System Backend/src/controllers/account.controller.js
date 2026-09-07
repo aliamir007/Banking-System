@@ -1,11 +1,5 @@
-import {
-  createAccount,
-  listAccountsForUser,
-  listAllAccounts,
-  getAccountById,
-  getAccountBalance,
-} from '../services/account.service.js';
-import { validateCreateAccount } from '../validators/account.validator.js';
+import {createAccount,listAccountsForUser,listAllAccounts,getAccountById,getAccountBalance} from '../services/account.service.js';
+import { validateCreateAccount, validateDeposit } from '../validators/account.validator.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { sendSuccess, sendValidationError } from '../utils/apiResponse.js';
 import { ROLES } from '../constants/roles.js';
@@ -31,8 +25,7 @@ export const create = asyncHandler(async (req, res) => {
 // changes later on
 
 export const list = asyncHandler(async (req, res) => {
-  // Admins listing via this endpoint still only see their own accounts;
-  // admin-wide visibility lives under /api/v1/admin/accounts (later stage)
+  
   const accounts = req.user.role === ROLES.ADMIN
     ? await listAllAccounts()
     : await listAccountsForUser(req.user.id);
@@ -61,5 +54,24 @@ export const getBalance = asyncHandler(async (req, res) => {
     statusCode: 200,
     message: 'Balance retrieved successfully',
     data: balance,
+  });
+});
+export const deposit = asyncHandler(async (req, res) => {
+  const errors = validateDeposit(req.body);
+  if (errors.length > 0) {
+    return sendValidationError(res, errors);
+  }
+
+  const account = await depositToAccount(
+    req.params.id,
+    { amount: Number(req.body.amount) },
+    req.user,
+    { ip: req.ip, userAgent: req.headers['user-agent'] }
+  );
+
+  return sendSuccess(res, {
+    statusCode: 200,
+    message: 'Deposit successful',
+    data: { account },
   });
 });

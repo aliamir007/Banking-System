@@ -13,6 +13,7 @@ import NotFound from './pages/NotFound.jsx';
 import Dashboard from './pages/customer/Dashboard.jsx';
 import Accounts from './pages/customer/Accounts.jsx';
 import CreateAccount from './pages/customer/CreateAccount.jsx';
+import Deposit from './pages/customer/Deposit.jsx';
 import Transfer from './pages/customer/Transfer.jsx';
 import Transactions from './pages/customer/Transactions.jsx';
 import Profile from './pages/customer/Profile.jsx';
@@ -62,6 +63,14 @@ function App() {
           element={
             <ProtectedRoute>
               <CreateAccount />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/deposit"
+          element={
+            <ProtectedRoute>
+              <Deposit />
             </ProtectedRoute>
           }
         />

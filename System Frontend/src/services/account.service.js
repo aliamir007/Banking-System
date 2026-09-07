@@ -12,3 +12,7 @@ export const getAccountRequest = (id) => api.get(`/accounts/${id}`).then((res) =
 
 // GET /api/v1/accounts/:id/balance -> { accountId, accountNumber, balance, currency, status }
 export const getAccountBalanceRequest = (id) => api.get(`/accounts/${id}/balance`).then((res) => res.data);
+
+// POST /api/v1/accounts/:id/deposit  body:{ amount } -> { account }
+export const depositRequest = (id, amount) =>
+  api.post(`/accounts/${id}/deposit`, { amount }).then((res) => res.data.account);
